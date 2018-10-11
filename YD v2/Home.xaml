@@ -158,7 +158,123 @@
                         <TextBlock Text="Playlists"/>
                     </StackPanel>
                 </TabItem.Header>
-                <Grid Background="#3D3D3D" Margin="0,-30,-0.4,30.2"/>
+                <Grid Background="#3D3D3D" Margin="0,-30,-0.4,30.2">
+                    <Viewbox Width="40"
+                 Height="40"
+                 HorizontalAlignment="Center"
+                 Margin="0,50,0,-60"
+                 VerticalAlignment="Top">
+                        <Rectangle Width="20"
+                       Height="20"
+                       x:Name="UpdateVisual">
+                        </Rectangle>
+                    </Viewbox>
+                    <Label HorizontalAlignment="Center" 
+                        VerticalAlignment="Center"
+                           Margin="0,-250,0,0"
+               Height="33">
+                        <Label x:Name="UpdateLabel"
+                   Foreground="#C8C8C8" 
+                   Content="All playlists are up-to-date"
+                   FontFamily="TradeGothic"
+                   Height="28"/>
+                    </Label>
+
+                    <StackPanel 
+            HorizontalAlignment="Left" 
+            Height="45"
+            Margin="207,-140,0,0"  
+            Width="60"
+            TextElement.FontFamily="TradeGothic"
+            TextElement.FontSize="15" RenderTransformOrigin="0,0">
+                        <TextBlock x:Name="channeltext" Text="0" TextAlignment="Center" />
+                        <TextBlock Text="Channels" TextAlignment="Center"/>
+                    </StackPanel>
+                    <StackPanel 
+            HorizontalAlignment="Left" 
+            Height="45"
+            Margin="302,-140,0,0"   
+            Width="60"
+            TextElement.FontFamily="TradeGothic"
+            TextElement.FontSize="15" RenderTransformOrigin="0,0">
+                        <TextBlock Text="0" TextAlignment="Center" />
+                        <TextBlock Text="Errors" TextAlignment="Center"/>
+                    </StackPanel>
+                    <StackPanel 
+            HorizontalAlignment="Left" 
+            Height="45"
+            Margin="112,-140,0,0"  
+            Width="60"
+            TextElement.FontFamily="TradeGothic"
+            TextElement.FontSize="15" RenderTransformOrigin="0,0">
+                        <TextBlock x:Name="sngtext" Text="0" TextAlignment="Center" />
+                        <TextBlock Text="Songs" TextAlignment="Center"/>
+                    </StackPanel>
+                    <StackPanel 
+            HorizontalAlignment="Left" 
+            Height="45"
+            Margin="20,-140,0,0"   
+            Width="60"
+            TextElement.FontFamily="TradeGothic"
+            TextElement.FontSize="15">
+                        <TextBlock x:Name="pltext" Text ="0" TextAlignment="Center" RenderTransformOrigin="0,0" />
+                        <TextBlock Text="Playslists" TextAlignment="Center"/>
+                    </StackPanel>
+
+
+                    <TextBox x:Name="UrlBoxPlaylist"
+                             Padding="3,3,0,0"
+                             HorizontalAlignment="Center"
+                             TextWrapping="NoWrap"
+                             Text="Paste YouTube URL here"
+                             Width="351"
+                             FontFamily="TradeGothic"
+                             FontSize="15"
+                             Margin="11,183,12,0"
+                             KeyDown="UrlBoxPlaylist_KeyDown"
+                             TextChanged="UrlBoxPlaylist_TextChanged" Height="29"
+                             VerticalAlignment="Top"/>
+                    <Button x:Name="SearchBtn"
+                            HorizontalAlignment="Right"
+                            Height="29"
+                            Margin="0,183,12,0"
+                            VerticalAlignment="Top"
+                            Width="52"
+                            Click="SearchBtn_Click"
+                            Style="{StaticResource btn}">
+                        <Rectangle Height="25"
+                                   Width="25"
+                                   Fill="Black"
+                                   RenderTransformOrigin="-2.144,0.336">
+                            <Rectangle.OpacityMask>
+                                <VisualBrush  Visual="{StaticResource SearchIcon}" />
+                            </Rectangle.OpacityMask>
+                        </Rectangle>
+                    </Button>
+                    <ListView x:Name="PlayView"
+                  ItemsSource="{Binding items}"
+                  HorizontalAlignment="Center"
+                  Height="180" 
+                  Margin="11,234,10,0"
+                  VerticalAlignment="Top"
+                  Width="353"
+                  Background="#C8C8C8"
+                  MouseDoubleClick="PlayView_MouseDoubleClick"
+                  PreviewMouseRightButtonUp="PlayView_PreviewMouseRightButtonUp">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel TextElement.FontFamily="TradeGothic" 
+                                TextElement.FontSize="12"                                 
+                                VerticalAlignment="Stretch">
+                                    <TextBlock Text="{Binding Path=Name}" FontWeight="Bold" />
+                                    <TextBlock Text="{Binding Path=SongsCount, StringFormat='Songs Count: {0}'}" FontWeight="Bold" />
+                                    <TextBlock Text="{Binding Path=ChannelName, StringFormat='Channel Name: {0}'}" FontWeight="Bold"/>
+                                    <TextBlock Text="{Binding Path=LastUpdate, StringFormat='Last Update: {0}'}" Foreground="{Binding Path=StatusColor}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </Grid>
             </TabItem>
             <TabItem  Margin="178.4,-25,-178.4,24.6">
                 <TabItem.Header>

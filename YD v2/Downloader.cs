@@ -107,9 +107,9 @@ namespace YD_v2
             stream.Flush();
             stream.Close();
             webClient.Dispose();
-            Title = video.Title; // "Infected Mushroom - Spitfire [Monstercat Release]"
-            Author = video.Author; // "Monstercat"
-            Duration = video.Duration.ToString(); // 00:07:14
+            Title = video.Title;
+            Author = video.Author;
+            Duration = video.Duration.ToString();
 
         }
     }
@@ -291,6 +291,35 @@ namespace YD_v2
                 Directory.CreateDirectory(rootpath);
             }
         }
+        public async Task DownloadByYouTubeExplode(string url, string path, bool onlyAudio)
+        {
+            var client = new YoutubeClient();
+            string id = YoutubeClient.ParseVideoId(url);
+            var video = await client.GetVideoAsync(id);
+            var streamInfoSet = await client.GetVideoMediaStreamInfosAsync(id);
+
+            if (onlyAudio)
+            {
+                var streamInfo = streamInfoSet.Audio.WithHighestBitrate();
+                var ext = streamInfo.Container.GetFileExtension();
+                if (!File.Exists(path + "/" + video.Title + "." + ext))
+                {
+                    await client.DownloadMediaStreamAsync(streamInfo, path + "/" + video.Title + "." + ext);
+                    MessageBox.Show("Downloaded: " + video.Title);
+                }
+            }
+            else
+            {
+                var streamInfo = streamInfoSet.Video.WithHighestVideoQuality();
+                var ext = streamInfo.Container.GetFileExtension();
+                if (!File.Exists(path + "/" + video.Title + "." + ext))
+                {
+                    await client.DownloadMediaStreamAsync(streamInfo, path + "/" + video.Title + "." + ext);
+                    MessageBox.Show("Downloaded: " + video.Title);
+                }
+            }
+
+        }
         public async Task DownloadOneSongAsync(string url, string path)
         {
             var client = new YoutubeClient();
@@ -307,7 +336,7 @@ namespace YD_v2
             if(!File.Exists(path + "/" + video.Title + "." + ext))
             {
                 await client.DownloadMediaStreamAsync(streamInfo, path + "/" + video.Title + "." + ext);
-                ShowNotification(video.Title);
+                MessageBox.Show("Downloaded: " + video.Title);
             }
 
         }
@@ -357,30 +386,17 @@ namespace YD_v2
 
             try
             {
-                // var vid = youtube.GetVideo(url);
                 var vid = await youtube.GetVideoAsync(url);
-
-                //byte[] x = await vid.GetBytesAsync();
-
                 Stream sm = await vid.StreamAsync();
                 FileStream file = new FileStream(path + "/" + vid.FullName, FileMode.Create, FileAccess.ReadWrite);
                 sm.CopyTo(file);
                 file.Close();
                 ShowNotification(vid.Title);
 
-                //File.WriteAllBytes(dwnpath + "/" + vid.FullName, vid.GetBytes()); // w tym miejscu najprawdopobniej wyciek, lepiej uzyc strumienia
-                //var stream = new MemoryStream(x);
-
-                //FileStream file = new FileStream(path + "/" + vid.FullName, FileMode.Create, FileAccess.ReadWrite);
-                //stream.CopyTo(file);
-                //file.Close();
-
-                //stream = null;
-
             }
             catch (Exception e)
             {
-
+                MessageBox.Show(e.ToString());
             }
         }
         public void DownloadAllVideos()
@@ -505,54 +521,6 @@ namespace YD_v2
 
             //aa.Show();
             notifier.ShowError("Downloaded " + title);
-        }
-
-
-        public void DownloadAudio(string url)
-        {
-            IEnumerable<YoutubeExtractor.VideoInfo> videoInfos = DownloadUrlResolver.GetDownloadUrls(url);
-            YoutubeExtractor.VideoInfo video = videoInfos
-                .Where(info => info.CanExtractAudio)
-                .OrderByDescending(info => info.AudioBitrate)
-                .First();
-
-            /*
-             * If the video has a decrypted signature, decipher it
-             */
-            if (video.RequiresDecryption)
-            {
-                DownloadUrlResolver.DecryptDownloadUrl(video);
-            }
-
-            /*
-             * Create the audio downloader.
-             * The first argument is the video where the audio should be extracted from.
-             * The second argument is the path to save the audio file.
-             */
-            var audioDownloader = new AudioDownloader(video, Path.Combine("C:/YDv2/Other Downloads", video.Title + video.AudioExtension));
-
-
-            audioDownloader.Execute();
-        }
-        public void DownloadVideo(string url)
-        {
-            IEnumerable<YoutubeExtractor.VideoInfo> videoInfos = DownloadUrlResolver.GetDownloadUrls(url);
-            YoutubeExtractor.VideoInfo video = videoInfos
-                .OrderByDescending(info => info.Resolution)
-                .First();
-
-            if (video.RequiresDecryption)
-            {
-                DownloadUrlResolver.DecryptDownloadUrl(video);
-            }
-
-            /*
-             * Create the video downloader.
-             * The first argument is the video to download.
-             * The second argument is the path to save the video file.
-             */
-            var videoDownloader = new VideoDownloader(video, Path.Combine("C:/YDv2/Videos", video.Title + video.VideoExtension));
-            videoDownloader.Execute();
         }
 
     }

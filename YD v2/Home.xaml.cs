@@ -199,12 +199,6 @@ namespace YD_v2
                 }
         }
 
-        private void Grid_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            if (e.ChangedButton == MouseButton.Left)
-                this.DragMove();
-        }
-
         private void UrlBoxPlaylists_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
             if (UrlBox.Text == "Paste YouTube URL here")
@@ -310,6 +304,30 @@ namespace YD_v2
         {
 
 
+        }
+
+        private void DownloadBtn_Click(object sender, RoutedEventArgs e)
+        {
+            bool onlyAudio = OnlyAudioCheckBox.IsChecked == true;
+            dwn.DownloadByYouTubeExplode(UrlBox.Text, "c:/YDv2/Other Downloads", onlyAudio);
+        }
+
+        private void StackPanel_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton == MouseButton.Left)
+                this.DragMove();
+        }
+
+        private void TabHeader_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            if (this.Cursor != System.Windows.Input.Cursors.Wait)
+                Mouse.OverrideCursor = System.Windows.Input.Cursors.Hand;
+        }
+
+        private void TabHeader_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            if (this.Cursor != System.Windows.Input.Cursors.Wait)
+                Mouse.OverrideCursor = System.Windows.Input.Cursors.Arrow;
         }
     }
 }

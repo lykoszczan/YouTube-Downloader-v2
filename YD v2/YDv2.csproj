@@ -96,8 +96,8 @@
     <Reference Include="Google.Apis.YouTube.v3, Version=1.34.0.1226, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
       <HintPath>..\packages\Google.Apis.YouTube.v3.1.34.0.1226\lib\net45\Google.Apis.YouTube.v3.dll</HintPath>
     </Reference>
-    <Reference Include="libvideo, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VideoLibrary.2.0.0\lib\netstandard1.1\libvideo.dll</HintPath>
+    <Reference Include="libvideo, Version=2.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\VideoLibrary.2.0.1\lib\netstandard1.1\libvideo.dll</HintPath>
     </Reference>
     <Reference Include="MediaToolkit, Version=1.1.0.1, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MediaToolkit.1.1.0.1\lib\net40\MediaToolkit.dll</HintPath>
@@ -216,8 +216,8 @@
     <Reference Include="WpfAnimatedGif, Version=1.4.17.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\WpfAnimatedGif.1.4.17\lib\net\WpfAnimatedGif.dll</HintPath>
     </Reference>
-    <Reference Include="YoutubeExplode, Version=4.3.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\YoutubeExplode.4.3.1\lib\net45\YoutubeExplode.dll</HintPath>
+    <Reference Include="YoutubeExplode, Version=4.3.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\YoutubeExplode.4.3.3\lib\net45\YoutubeExplode.dll</HintPath>
     </Reference>
     <Reference Include="YoutubeExtractor, Version=0.10.11.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\YoutubeExtractor.0.10.11\lib\net35\YoutubeExtractor.dll</HintPath>

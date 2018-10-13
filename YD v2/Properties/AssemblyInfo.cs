@@ -8,9 +8,9 @@ using System.Windows;
 // zestaw atrybutów. Zmień wartości tych atrybutów, aby zmodyfikować informacje
 // powiązane z zestawem.
 [assembly: AssemblyTitle("YD v2")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Application to downloading videos and music from YouTube")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Marcin Łykowski")]
 [assembly: AssemblyProduct("YD v2")]
 [assembly: AssemblyCopyright("Copyright ©  2018")]
 [assembly: AssemblyTrademark("")]
@@ -51,5 +51,5 @@ using System.Windows;
 // Możesz określić wszystkie wartości lub użyć domyślnych numerów kompilacji i poprawki
 // przy użyciu symbolu „*”, tak jak pokazano poniżej:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: AssemblyVersion("2.0.0.1")]
+[assembly: AssemblyFileVersion("2.0.0.1")]

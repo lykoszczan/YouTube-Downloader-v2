@@ -1,6 +1,7 @@
 ﻿<Window x:Class="YD_v2.Home"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:properties="clr-namespace:YD_v2.Properties"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:gif="http://wpfanimatedgif.codeplex.com"
@@ -99,7 +100,7 @@
                                 </Grid>
                                 <ControlTemplate.Triggers>
                                     <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter TargetName="Panel" Property="Background" Value="#828282"/>
+                                        <Setter TargetName="Panel" Property="Background" Value="#505050"/>
                                     </Trigger>
                                     <Trigger Property="IsSelected" Value="True">
                                         <Setter TargetName="Panel" Property="Background" Value="#828282" />
@@ -144,7 +145,7 @@
                                     Width="201">
                             <TextBlock x:Name="SongName"  TextWrapping="Wrap" Padding="0,5,0,0" Height="34" Margin="15,0,-0.2,0"/>
                             <TextBlock x:Name="Author" Padding="0,5,0,0" Height="20" Margin="15,0,-0.2,0"/>
-                            <TextBlock x:Name="Duratn" Padding="0,5,0,0" Margin="15,0,-0.2,0" Height="20"/>
+                            <TextBlock x:Name="Duration" Padding="0,5,0,0" Margin="15,0,-0.2,0" Height="20"/>
                         </StackPanel>
                         <Image  x:Name="Thumbnail"
                                 HorizontalAlignment="Left" 
@@ -176,7 +177,8 @@
                             <TextBlock Text="Download"/>
                         </StackPanel>
                     </Button>
-                    <CheckBox x:Name="OnlyAudioCheckBox" Content="Only audio" HorizontalAlignment="Left" Margin="40,269,0,0" VerticalAlignment="Top" Width="92"/>
+                    <CheckBox x:Name="OnlyAudioCheckBox" IsChecked="True" Content="Only audio" HorizontalAlignment="Left" Margin="40,269,0,0" VerticalAlignment="Top" Width="118"/>
+                    <CheckBox x:Name="SaveToDefaultPathCheckBox" IsChecked="True" Content="Save to defualt path" HorizontalAlignment="Left" Margin="223,269,0,0" VerticalAlignment="Top" Width="120"/>
                 </Grid>
             </TabItem>
             <TabItem  Margin="112,-25,-122.4,13.4">
@@ -235,7 +237,7 @@
             Width="60"
             TextElement.FontFamily="TradeGothic"
             TextElement.FontSize="15" RenderTransformOrigin="0,0">
-                        <TextBlock x:Name="sngtext" Text="0" TextAlignment="Center" />
+                        <TextBlock x:Name="songsCountTextBox" Text="0" TextAlignment="Center" />
                         <TextBlock Text="Songs" TextAlignment="Center"/>
                     </StackPanel>
                     <StackPanel 
@@ -245,7 +247,7 @@
             Width="60"
             TextElement.FontFamily="TradeGothic"
             TextElement.FontSize="15">
-                        <TextBlock x:Name="pltext" Text ="0" TextAlignment="Center" RenderTransformOrigin="0,0" />
+                        <TextBlock x:Name="playlistCountTextBox" Text ="0" TextAlignment="Center" RenderTransformOrigin="0,0" />
                         <TextBlock Text="Playslists" TextAlignment="Center"/>
                     </StackPanel>
 
@@ -279,7 +281,7 @@
                             </Rectangle.OpacityMask>
                         </Rectangle>
                     </Button>
-                    <ListView x:Name="PlayView"
+                    <ListView x:Name="PlaylistsListView"
                   ItemsSource="{Binding items}"
                   HorizontalAlignment="Center"
                   Height="180" 
@@ -306,7 +308,7 @@
             </TabItem>
             <TabItem  Margin="178.4,-25,-190.4,14.2">
                 <TabItem.Header>
-                    <StackPanel MouseEnter="TabHeader_MouseEnter" MouseLeave="TabHeader_MouseLeave">
+                    <StackPanel>
                         <Rectangle Width="20"
                        Height="20"
                        Fill="Black">
@@ -317,7 +319,22 @@
                         <TextBlock Text="Settings"/>
                     </StackPanel>
                 </TabItem.Header>
-                <Grid Background="#3D3D3D" Margin="0,-30,-0.4,30.2"/>
+                <Grid Background="#3D3D3D" Margin="0,-30,-0.4,30.2">
+                    <Label Content="Default download path" HorizontalAlignment="Left" Margin="33,54,0,0" VerticalAlignment="Top"/>
+                    <TextBox x:Name="DefaultPathTextBox" Padding="0,2,0,0" IsReadOnly="True" HorizontalAlignment="Left" Height="23" Margin="184,54,0,0" TextWrapping="Wrap" Text="{Binding Source={x:Static properties:Settings.Default},Path=DefaultPath}" VerticalAlignment="Top" Width="139"/>
+                    <CheckBox x:Name="StartWithWindowsCheckBox" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="184,99,0,0"/>
+                    <Label Content="Start with Windows" HorizontalAlignment="Left" Margin="33,95,0,0" VerticalAlignment="Top"/>
+                    <CheckBox x:Name="DownloadOnlyAudioCheckBox" HorizontalAlignment="Left" Margin="184,141,0,0" VerticalAlignment="Top"/>
+                    <Label Content="Download only audio" HorizontalAlignment="Left" Margin="33,136,0,0" VerticalAlignment="Top"/>
+                    <Button Style="{StaticResource btn}" HorizontalAlignment="Left" 
+                            Margin="328,54,0,0" VerticalAlignment="Top" Width="30" Height="23" 
+                            Click="BrowseButton_Click" ToolTip="Browse">
+                        <StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                            <Image Source="{StaticResource Browse}" Height="20"/>
+                        </StackPanel>
+                    </Button>
+
+                </Grid>
             </TabItem>
         </TabControl>
     </Grid>

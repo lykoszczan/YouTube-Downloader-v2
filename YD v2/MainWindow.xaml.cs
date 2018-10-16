@@ -19,10 +19,6 @@ using System.Xml;
 using Windows.Data;
 using Windows.UI;
 using Windows.UI.Notifications;
-using ToastNotifications;
-using ToastNotifications.Lifetime;
-using ToastNotifications.Position;
-using ToastNotifications.Messages;
 
 namespace YD_v2
 {
@@ -43,36 +39,10 @@ namespace YD_v2
             InitializeComponent();
             CreateContextMenuOnListView();
             dwn = new Downloader();
-            Downloader.SetStartup();
+            //Downloader.SetStartup();
             AddItemToListView();
             UpdateLabels();
             Tray();
-        }
-        private void ShowNotifi(string title)
-        {
-            Notifier notifier = new Notifier(cfg =>
-            {
-                cfg.PositionProvider = new WindowPositionProvider(
-                    parentWindow: System.Windows.Application.Current.MainWindow,
-                    corner: Corner.BottomRight,
-                    offsetX: -580,
-                    offsetY: -600);
-
-                cfg.LifetimeSupervisor = new TimeAndCountBasedLifetimeSupervisor(
-                    notificationLifetime: TimeSpan.FromSeconds(3),
-                    maximumNotificationCount: MaximumNotificationCount.FromCount(5));
-
-                cfg.Dispatcher = System.Windows.Application.Current.Dispatcher;
-
-                
-            });
-
-
-            //ToastNotifier aa;
-            //ToastNotification toast = new ToastNotification()
-            
-            //aa.Show();
-            notifier.ShowError("Downloaded " + title);
         }
         private void Tray()
         {
@@ -103,7 +73,7 @@ namespace YD_v2
 
         private void ItemShowFolder_click(object sender, EventArgs e)
         {
-            Process.Start("c:/YDv2");
+            Process.Start(Properties.Settings.Default.DefaultPath);
         }
 
         private void Item_click(object sender, EventArgs e)
@@ -331,11 +301,11 @@ namespace YD_v2
         private void PlayviewmenuDelete_click(object sender, EventArgs e)
         {
             XmlDocument doc = new XmlDocument();
-            doc.Load(dwn.rootpath + "/info.xml");
+            doc.Load(dwn.Rootpath + "/info.xml");
             ItemOnList onList = (ItemOnList)PlayView.SelectedItem;
             XmlNode node = doc.SelectSingleNode("//Playlist[@Id='" + onList.Id + "']");
             node.ParentNode.RemoveChild(node);
-            doc.Save(dwn.rootpath + "/info.xml");
+            doc.Save(dwn.Rootpath + "/info.xml");
 
             AddItemToListView();
             UpdateLabels();
@@ -357,15 +327,9 @@ namespace YD_v2
 
         private void AddBtb_click(object sender, RoutedEventArgs e)
         {
-            AddSong ads = new AddSong();
-            ads.ShowDialog();
+            //AddSong ads = new AddSong();
+            //ads.ShowDialog();
 
-        }
-
-        private void BtnSettings_click(object sender, RoutedEventArgs e)
-        {
-            Settings st = new Settings();
-            st.ShowDialog();
         }
 
         private void RefreshBtn_Click(object sender, RoutedEventArgs e)

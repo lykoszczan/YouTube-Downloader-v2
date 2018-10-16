@@ -204,8 +204,7 @@
                 Height="41" 
                 Margin="260,500,0,-509"
                 VerticalAlignment="Top"
-                Width="75"
-                Click="BtnSettings_click">
+                Width="75">
             <StackPanel>
                 <Rectangle Width="20"
                        Height="20"

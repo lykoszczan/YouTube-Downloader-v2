@@ -16,10 +16,6 @@ using Microsoft.Win32;
 using System.Reflection;
 using YoutubeExplode;
 using YoutubeExplode.Models.MediaStreams;
-using ToastNotifications;
-using ToastNotifications.Position;
-using ToastNotifications.Lifetime;
-using ToastNotifications.Messages;
 using System.Drawing;
 using System.Net;
 using System.Windows.Media.Imaging;
@@ -29,113 +25,27 @@ using YoutubeExtractor;
 
 namespace YD_v2
 {
-
-
-    class ItemOnList
-    {
-        private const string rootpath = @"c:/YDv2";
-        public string Name { get; set; }
-        public string SongsCount { get; set; }
-        public string LastUpdate { get; set; }
-        public string Id { get; set; }
-        public string Path { get; set; }
-        public string ChannelName { get; set; }
-        public System.Windows.Media.Brush StatusColor
-        {
-            get
-            {
-                if (LastUpdate == "Updating ...")
-                    return System.Windows.Media.Brushes.Orange;
-                else
-                {
-                    DateTime last = Convert.ToDateTime(LastUpdate);
-
-                    if (DateTime.Compare(DateTime.Now.Date, last.Date) == 0)
-                        return System.Windows.Media.Brushes.Green;
-                    else
-                        return System.Windows.Media.Brushes.Red;
-
-                }
-            }
-
-            set
-            {
-                StatusColor = value;
-            }
-        }
-
-        public ItemOnList()
-        {
-            
-        }
-    }
-    class VideoInfo
-    {
-        public string Title { get; set; }
-        public string Author { get; set; }
-        public string Duration { get; set; }
-        public ImageSource Image { get; set; }
-
-        public VideoInfo()
-        {
-        }
-        //If you get 'dllimport unknown'-, then add 'using System.Runtime.InteropServices;'
-        [DllImport("gdi32.dll", EntryPoint = "DeleteObject")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern bool DeleteObject([In] IntPtr hObject);
-
-        public ImageSource ImageSourceForBitmap(Bitmap bmp)
-        {
-            var handle = bmp.GetHbitmap();
-            try
-            {
-                return Imaging.CreateBitmapSourceFromHBitmap(handle, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
-            }
-            finally { DeleteObject(handle); }
-        }
-        public async Task GetInfo(string url)
-        {
-            List<String> info = new List<string>();
-            var client = new YoutubeClient();
-            string id = YoutubeClient.ParseVideoId(url);
-            var video = await client.GetVideoAsync(id);
-            var str = video.Thumbnails.LowResUrl;
-            WebClient webClient = new WebClient();
-            Stream stream = webClient.OpenRead(str);
-            Bitmap bitmap = new Bitmap(stream);
-            Image = ImageSourceForBitmap(bitmap);
-            stream.Flush();
-            stream.Close();
-            webClient.Dispose();
-            Title = video.Title;
-            Author = video.Author;
-            Duration = video.Duration.ToString();
-
-        }
-    }
-
     class Downloader
     { 
-        public string rootpath;
-
-
         public string PlaylistId { get; private set; }
         public string PlaylistName { get; private set; }
         public string Channelname { get; private set; }
         public int Itemscount { get; private set; }
         public int SongsCount { get; private set; }
+        public string Rootpath { get; private set; }
+        public string XmlInfoPath { get; set; }
 
-        public List<string> playlistURL;
-
+        private List<string> playlistURL;
 
         public Downloader()
         {
             playlistURL = new List<string>();
-            rootpath =  @"c:/YDv2";
-            CreateInfoXML();
+            Rootpath =  Properties.Settings.Default.DefaultPath + "/YDv2";
+            XmlInfoPath = Properties.Settings.Default.DefaultPath + "/YDv2/Info.xml";
             CreateRootDirectory();
+            CreateInfoXML();            
         }
-        public static void SetStartup()
+        public void SetStartup()
         {
             try
             {
@@ -145,9 +55,9 @@ namespace YD_v2
             }
             catch { }
         }
-        public void CreateInfoXML()
+        private void CreateInfoXML()
         {
-            if (!File.Exists(rootpath + "/info.xml"))
+            if (!File.Exists(XmlInfoPath))
             {
                 XmlDocument doc = new XmlDocument();
                 XmlNode docNode = doc.CreateXmlDeclaration("1.0", "UTF-8", null);
@@ -156,7 +66,7 @@ namespace YD_v2
                 XmlNode playlistsNode = doc.CreateElement("Playlists");
                 doc.AppendChild(playlistsNode);
 
-                doc.Save(rootpath + "/info.xml");
+                doc.Save(XmlInfoPath);
             }
         }
         private List<string> SongsToDownload(List<string> songs, string path)
@@ -198,7 +108,7 @@ namespace YD_v2
         private void AddNode(Google.Apis.YouTube.v3.Data.Playlist item)
         {
             XmlDocument doc = new XmlDocument();
-            doc.Load(rootpath + "/info.xml");
+            doc.Load(Rootpath + "/info.xml");
 
             XmlNode playlistnode;
             XmlAttribute playlistid;
@@ -227,7 +137,7 @@ namespace YD_v2
                 playlistnode.AppendChild(node);
 
                 node = doc.CreateElement("Path");
-                node.AppendChild(doc.CreateTextNode(rootpath + "/" + item.Snippet.Title));
+                node.AppendChild(doc.CreateTextNode(Rootpath + "/" + item.Snippet.Title));
                 playlistnode.AppendChild(node);
 
                 doc.DocumentElement.AppendChild(playlistnode);
@@ -255,7 +165,7 @@ namespace YD_v2
                             xn.InnerText = DateTime.Now.ToString();
                             break;
                         case "Path":
-                            xn.InnerText = rootpath + "/" + item.Snippet.Title;
+                            xn.InnerText = Rootpath + "/" + item.Snippet.Title;
                             break;
                         default:
                             xn.InnerText = "";
@@ -264,18 +174,18 @@ namespace YD_v2
                 }               
             }
 
-            doc.Save(rootpath + "/info.xml");
+            doc.Save(Rootpath + "/info.xml");
         }
         public string[] Directories()
         {
             string[] pom = { };
             SongsCount = 0;
-            if (!Directory.Exists(rootpath))
+            if (!Directory.Exists(Rootpath))
                 return pom;
             else
             {
 
-                pom = Directory.GetDirectories(rootpath);
+                pom = Directory.GetDirectories(Rootpath);
                 for(int i = 0; i<pom.Length;i++)
                 {
                     SongsCount = Directory.GetFiles(pom[i]).Length + SongsCount - 1;
@@ -286,9 +196,9 @@ namespace YD_v2
         }
         public void CreateRootDirectory()
         {
-            if(!Directory.Exists(rootpath))
+            if(!Directory.Exists(Rootpath))
             {
-                Directory.CreateDirectory(rootpath);
+                Directory.CreateDirectory(Rootpath);
             }
         }
         public async Task DownloadByYouTubeExplode(string url, string path, bool onlyAudio)
@@ -310,7 +220,7 @@ namespace YD_v2
             }
             else
             {
-                var streamInfo = streamInfoSet.Video.WithHighestVideoQuality();
+                var streamInfo = streamInfoSet.Muxed.WithHighestVideoQuality();
                 var ext = streamInfo.Container.GetFileExtension();
                 if (!File.Exists(path + "/" + video.Title + "." + ext))
                 {
@@ -320,43 +230,18 @@ namespace YD_v2
             }
 
         }
-        public async Task DownloadOneSongAsync(string url, string path)
-        {
-            var client = new YoutubeClient();
-            string id = YoutubeClient.ParseVideoId(url);
-            
-            var video = await client.GetVideoAsync(id);
-
-            
-            var streamInfoSet = await client.GetVideoMediaStreamInfosAsync(id);
-
-
-            var streamInfo = streamInfoSet.Audio.WithHighestBitrate();
-            var ext = streamInfo.Container.GetFileExtension();
-            if(!File.Exists(path + "/" + video.Title + "." + ext))
-            {
-                await client.DownloadMediaStreamAsync(streamInfo, path + "/" + video.Title + "." + ext);
-                MessageBox.Show("Downloaded: " + video.Title);
-            }
-
-        }
-        public void DownloadOneSong(string url,string path)
+        public async Task DownloadOneVideoAsync(string url, string path)
         {
             string sourceformp3 = path;
             var youtube = YouTube.Default;
 
             try
             {
-                var vid = youtube.GetVideo(url);
-                //File.WriteAllBytes(dwnpath + "/" + vid.FullName, vid.GetBytes()); // w tym miejscu najprawdopobniej wyciek, lepiej uzyc strumienia
-                var stream = new MemoryStream(vid.GetBytes());
-
+                var vid = await youtube.GetVideoAsync(url);
+                Stream sm = await vid.StreamAsync();
                 FileStream file = new FileStream(path + "/" + vid.FullName, FileMode.Create, FileAccess.ReadWrite);
-                stream.CopyTo(file);
+                sm.CopyTo(file);
                 file.Close();
-
-                stream = null;
-
                 //string videoname = vid.FullName;
                 //videoname = videoname.Substring(0, videoname.Length - 4);
 
@@ -372,27 +257,6 @@ namespace YD_v2
                 //}
 
                 //File.Delete(path + "/" + vid.FullName);
-
-            }
-            catch (Exception e)
-            {
-
-            }
-        }
-        public async Task DownloadOneVideoAsync(string url, string path)
-        {
-            string sourceformp3 = path;
-            var youtube = YouTube.Default;
-
-            try
-            {
-                var vid = await youtube.GetVideoAsync(url);
-                Stream sm = await vid.StreamAsync();
-                FileStream file = new FileStream(path + "/" + vid.FullName, FileMode.Create, FileAccess.ReadWrite);
-                sm.CopyTo(file);
-                file.Close();
-                ShowNotification(vid.Title);
-
             }
             catch (Exception e)
             {
@@ -401,7 +265,7 @@ namespace YD_v2
         }
         public void DownloadAllVideos()
         {
-            string dwnpath = rootpath + "/" + PlaylistName;
+            string dwnpath = Rootpath + "/" + PlaylistName;
             string[] index = { };
             if (!Directory.Exists(dwnpath))
             {
@@ -411,7 +275,7 @@ namespace YD_v2
             playlistURL = SongsToDownload(playlistURL, dwnpath);
             for(int i = 0;i<=playlistURL.Count-1;i++)
             {
-                DownloadOneSongAsync(playlistURL[i], dwnpath);
+                DownloadByYouTubeExplode(playlistURL[i], dwnpath, true);
             }
         }        
         public string ParseplaylistId(string url)
@@ -488,39 +352,9 @@ namespace YD_v2
             idlist = SongsToDownload(idlist, path);
             for (int i = 0; i <= idlist.Count - 1; i++)
             {
-                DownloadOneSongAsync(idlist[i], path);
+                DownloadByYouTubeExplode(idlist[i], path, true);
             }
 
-        }
-        private void ShowToast()
-        {
-            
-        }
-        private void ShowNotification(string title)
-        {
-            Notifier notifier = new Notifier(cfg =>
-            {
-                cfg.PositionProvider = new WindowPositionProvider(
-                    parentWindow: System.Windows.Application.Current.MainWindow,
-                    corner: Corner.BottomRight,
-                    offsetX: -580,
-                    offsetY: -600);
-
-                cfg.LifetimeSupervisor = new TimeAndCountBasedLifetimeSupervisor(
-                    notificationLifetime: TimeSpan.FromSeconds(3),
-                    maximumNotificationCount: MaximumNotificationCount.FromCount(5));
-
-                cfg.Dispatcher = System.Windows.Application.Current.Dispatcher;
-
-
-            });
-
-
-            //ToastNotifier aa;
-            //ToastNotification toast = new ToastNotification()
-
-            //aa.Show();
-            notifier.ShowError("Downloaded " + title);
         }
 
     }

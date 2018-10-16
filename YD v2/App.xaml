@@ -8,7 +8,6 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary x:Name="IconsDictionary"  Source="pack://application:,,,/Icons.xaml" />
                 <ResourceDictionary x:Name="ButtonStyle" Source="ResourcesDictionary.xaml"/>
-                <ResourceDictionary Source="pack://application:,,,/ToastNotifications.Messages;component/Themes/Default.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

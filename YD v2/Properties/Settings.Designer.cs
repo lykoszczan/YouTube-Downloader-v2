@@ -22,5 +22,17 @@ namespace YD_v2.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string DefaultPath {
+            get {
+                return ((string)(this["DefaultPath"]));
+            }
+            set {
+                this["DefaultPath"] = value;
+            }
+        }
     }
 }

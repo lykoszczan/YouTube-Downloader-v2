@@ -51,6 +51,7 @@ Tutaj znajdziemy ustawienia aplikacji. Możemy ustawić domyślną ścieżkę po
 
 ![Home](https://github.com/lykoszczan/YouTube-Downloader-v2/blob/master/YD%20v2/screenshots/settings.png?raw=true)
 
+
 ## Problemy
 <p>Z racji tego, że YouTube walczy z pobieraniem utworów z ich serwisu non stop wprowadzane są nowe zabezpieczenia, które mogą uniemożliwić pobranie niektórych filmów, dlatego miej na uwadzę aby zawsze być w posiadaniu najnowszej wersji aplikacji</p>
 

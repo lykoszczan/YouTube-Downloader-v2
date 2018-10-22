@@ -346,10 +346,12 @@
     <Resource Include="screenshots\any.png" />
     <Resource Include="screenshots\home.png" />
     <Resource Include="screenshots\not updated.png" />
-    <Resource Include="screenshots\playlistitem.png" />
     <Resource Include="screenshots\playlists.png" />
     <Resource Include="screenshots\selectsongs.png" />
     <Resource Include="screenshots\settings.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="screenshots\playlistitem.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

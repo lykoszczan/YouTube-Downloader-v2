@@ -1,4 +1,4 @@
-# YouTube Downloader v2
+# YouTube Downloader
 
 ## Spis treści
 * [Opis](#opis)

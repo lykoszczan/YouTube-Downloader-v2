@@ -26,16 +26,30 @@ Aplikacja powstała na własne potrzeby. Wiele jest ogólnodostępnych programó
 #### Home
 W trybie Home można pobierać pojedyńcze filmy. W tym celu należy wkleić link do filmu i zaczekać aż wyświetlą się podstawowe informacje na temat video. Po pomyślnym załadowaniu filmu należy zaznaczyć czy chcemy pobrać tylko dźwięk oraz czy pobieramy do domyślnej ścieżki
 
+![Home](https://github.com/lykoszczan/YouTube-Downloader-v2/blob/master/YD%20v2/screenshots/home.png?raw=true)
+
 #### Playlists
-Najbardziej rozbudowany tryb aplikacji. W tym miejscu możemy pobierać całe lub wybrane video ze wskazanej playlisty. Podobnie jak w przypadku zakładki Home, tutaj również zaczynamy od wklejenia Url-a interesującej nas playlisty. Następnie wyświetli się okno wybrania utworów, które chcemy pobrać. Zaznaczamy te, które nas interesują i klikamy Download. Pobrana przez nas playlista dodała się do listy "obserwowanych". Co nam daję możliwość obserwowania? <br>
+Najbardziej rozbudowany tryb aplikacji. W tym miejscu możemy pobierać całe lub wybrane video ze wskazanej playlisty. Podobnie jak w przypadku zakładki Home, tutaj również zaczynamy od wklejenia Url-a interesującej nas playlisty.
+
+![Home](https://github.com/lykoszczan/YouTube-Downloader-v2/blob/master/YD%20v2/screenshots/any.png?raw=true)
+
+Następnie wyświetli się okno wybrania utworów, które chcemy pobrać. Zaznaczamy te, które nas interesują i klikamy Download.
+
+![Home](https://github.com/lykoszczan/YouTube-Downloader-v2/blob/master/YD%20v2/screenshots/selectsongs.png?raw=true)
+
+Pobrana przez nas playlista dodała się do listy "obserwowanych". Co nam daję możliwość obserwowania? <br>
 * widzimy historię, które playlisty pobieraliśmy
 * w przypadku dodania nowych video do playlisty możemy ją zaaktualizować i pobrać te utwory, których jeszcze nie pobieraliśmy
 * możemy ustawić cykliczne odświeżanie playlisty, aby być zawsze na bieżąco
+
+![Home](https://github.com/lykoszczan/YouTube-Downloader-v2/blob/master/YD%20v2/screenshots/playlistitem.png?raw=true)
+
 <p>Aby usunąć playlistę z listy, należy nacisnąć prawy przycisk myszy na wybranej pozycji i wybrać opjcę Delete.</p>
 
 #### Settings
 Tutaj znajdziemy ustawienia aplikacji. Możemy ustawić domyślną ścieżkę pobierania, do której bedą się pobierać utwory pobierane z zakładki Home lub, w której bedą się tworzyć katologi playlist w przypadku zakładki Playlists. Dodatkowo możemy ustawić czy chcemy, aby aplikacja otwierała się razem ze startem Windows na naszym komputerze
 
+![Home](https://github.com/lykoszczan/YouTube-Downloader-v2/blob/master/YD%20v2/screenshots/settings.png?raw=true)
 
 ## Problemy
 <p>Z racji tego, że YouTube walczy z pobieraniem utworów z ich serwisu non stop wprowadzane są nowe zabezpieczenia, które mogą uniemożliwić pobranie niektórych filmów, dlatego miej na uwadzę aby zawsze być w posiadaniu najnowszej wersji aplikacji</p>

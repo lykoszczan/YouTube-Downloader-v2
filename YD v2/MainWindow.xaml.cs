@@ -206,7 +206,7 @@ namespace YD_v2
                 else
                 {
                     dwn.ParseVideosURLsAsync(playlistId);
-                    dwn.DownloadAllVideos();
+                    dwn.DownloadAllVideos(true);
                     AddItemToListView();
                     UpdateLabels();
                 }
@@ -293,7 +293,7 @@ namespace YD_v2
             SetUpdateStatus(onList.Name, onList.ChannelName);
             //            onList.StatusColor = System.Windows.Media.Brushes.Silver;
             await dwn.ParseVideosURLsAsync(onList.Id);
-            dwn.DownloadAllVideos();
+            dwn.DownloadAllVideos(true);
             AddItemToListView();
             UpdateLabels();
         }

@@ -193,18 +193,31 @@ namespace YD_v2
 
         private void SearchBtn_Click(object sender, RoutedEventArgs e)
         {
-                playlistId = downloaderClient.ParseplaylistId(UrlBox.Text);
-                if (playlistId == "")
-                {
-                    System.Windows.MessageBox.Show("Wrong URL");
-                }
-                else
-                { //TODO : poprawa poniższego, tak aby jedna metoda była downloadera
-                    downloaderClient.ParseVideosURLsAsync(playlistId);
-                    downloaderClient.DownloadAllVideos();
-                    AddItemToListView();
-                    UpdateLabels();
-                }
+            playlistId = downloaderClient.ParseplaylistId(UrlBoxPlaylist.Text);
+            if (playlistId == "")
+            {
+                System.Windows.MessageBox.Show("Wrong URL");
+            }
+            else
+            { //TODO : poprawa poniższego, tak aby jedna metoda była downloadera
+
+                SelectSongsToDownload(playlistId);
+
+                //tymczasowo komentuje do testów
+                //downloaderClient.ParseVideosURLsAsync(playlistId);
+                //downloaderClient.DownloadAllVideos();
+                //AddItemToListView();
+                //UpdateLabels();
+            }
+        }
+
+        private async Task SelectSongsToDownload(string id)
+        {
+            await downloaderClient.ParseVideosURLsAsync(id);
+            SelectSongs selectSongsDialog = new SelectSongs();
+            selectSongsDialog.PlaylistID = id;
+            selectSongsDialog.FillListView(downloaderClient.playlistSongs);
+            selectSongsDialog.ShowDialog();
         }
 
         private void UrlBoxPlaylists_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
@@ -282,7 +295,7 @@ namespace YD_v2
             ItemOnList onList = (ItemOnList)PlaylistsListView.SelectedItem;
             SetUpdateStatus(onList.Name, onList.ChannelName);
             await downloaderClient.ParseVideosURLsAsync(onList.Id);
-            downloaderClient.DownloadAllVideos();
+            downloaderClient.DownloadAllVideos(true);
             AddItemToListView();
             UpdateLabels();
         }

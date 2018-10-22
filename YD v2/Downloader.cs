@@ -34,12 +34,15 @@ namespace YD_v2
         public int SongsCount { get; private set; }
         public string Rootpath { get; private set; }
         public string XmlInfoPath { get; set; }
+            
 
         private List<string> playlistURL;
+        public List<string> playlistSongs;
 
         public Downloader()
         {
             playlistURL = new List<string>();
+            playlistSongs = new List<string>();
             Rootpath =  Properties.Settings.Default.DefaultPath + "/YDv2";
             XmlInfoPath = Properties.Settings.Default.DefaultPath + "/YDv2/Info.xml";
             CreateRootDirectory();
@@ -263,7 +266,16 @@ namespace YD_v2
                 MessageBox.Show(e.ToString());
             }
         }
-        public void DownloadAllVideos()
+
+        public void DownloadAllVideos(bool onlyAudio, List<string> Urls)
+        {
+            for (int i = 0; i <= Urls.Count - 1; i++)
+            {
+                DownloadByYouTubeExplode(Urls[i], Rootpath, onlyAudio);
+            }
+        }
+
+        public void DownloadAllVideos(bool onlyAudio)
         {
             string dwnpath = Rootpath + "/" + PlaylistName;
             string[] index = { };
@@ -271,11 +283,12 @@ namespace YD_v2
             {
                 Directory.CreateDirectory(dwnpath);
             }
-            //SaveSongsNodes(playlistURL, dwnpath);
+            
             playlistURL = SongsToDownload(playlistURL, dwnpath);
-            for(int i = 0;i<=playlistURL.Count-1;i++)
+
+            for (int i = 0;i<=playlistURL.Count-1;i++)
             {
-                DownloadByYouTubeExplode(playlistURL[i], dwnpath, true);
+                DownloadByYouTubeExplode(playlistURL[i], dwnpath, onlyAudio);
             }
         }        
         public string ParseplaylistId(string url)
@@ -294,6 +307,7 @@ namespace YD_v2
         public async Task ParseVideosURLsAsync(string id)
         {
             playlistURL.Clear();
+            playlistSongs.Clear();
             try
             {
                 var yt = new YouTubeService(new BaseClientService.Initializer() { ApiKey = "AIzaSyAJ10uqhKkiONdru2o_TKnF6EGJSCCowW0" });
@@ -301,7 +315,12 @@ namespace YD_v2
                 playlistListRequest.Id = id;
 
                 var playlistListResponse = await playlistListRequest.ExecuteAsync();
+
+
+
                 AddNode(playlistListResponse.Items[0]);
+                int i = 0;
+                string videoIdWithTitle;
                 foreach (var video in playlistListResponse.Items)
                 {
                     
@@ -321,8 +340,11 @@ namespace YD_v2
 
                         foreach (var playlistItem in playlistItemsListResponse.Items)
                         {
-
                             playlistURL.Add("https://www.youtube.com/embed/" + playlistItem.Snippet.ResourceId.VideoId);
+
+                            videoIdWithTitle = playlistItem.Snippet.Title + ";" + "https://www.youtube.com/embed/" + playlistItem.Snippet.ResourceId.VideoId;
+                            playlistSongs.Add(videoIdWithTitle);
+
 
                             //Console.WriteLine(counter.ToString() + ". https://www.youtube.com/embed/" + playlistItem.Snippet.ResourceId.VideoId);
                             //Console.Write("Video Title ={0} ", playlistItem.Snippet.Title);  
